@@ -5,4 +5,6 @@ module com.example.pbokmnarkotikamerahputih {
 
     opens com.example.pbokmnarkotikamerahputih to javafx.fxml;
     exports com.example.pbokmnarkotikamerahputih;
+    exports com;
+    opens com to javafx.fxml;
 }
