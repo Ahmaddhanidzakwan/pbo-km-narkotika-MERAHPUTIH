@@ -1,6 +1,6 @@
-package com.example.pbofinal.view;
+package com.example.pbokmnarkotikamerahputih;
 
-import com.example.pbofinal.controller.KnowledgeController;
+import com.example.pbokmnarkotikamerahputih.controller.KnowledgeController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,7 +44,7 @@ public class MainView extends Application {
 
         contentArea = new BorderPane();
         contentArea.setStyle("-fx-background-color: #0B1622;");
-        tampilkanStatistik(); // halaman default saat start
+        tampilkanStatistik();
 
         root.setCenter(contentArea);
 
