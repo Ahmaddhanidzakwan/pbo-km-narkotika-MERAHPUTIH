@@ -1,9 +1,10 @@
-package com.example.pbofinal.controller;
+package com.example.pbokmnarkotikamerahputih.controller;
 
-import com.example.pbofinal.model.KnowledgeRepository;
-import com.example.pbofinal.model.Putusan;
-import com.example.pbofinal.model.StatistikPutusan;
-import com.example.pbofinal.util.ValidationUtil;
+import com.example.pbokmnarkotikamerahputih.model.KnowledgeRepository;
+import com.example.pbokmnarkotikamerahputih.model.Putusan;
+import com.example.pbokmnarkotikamerahputih.model.StatistikPutusan;
+import com.example.pbokmnarkotikamerahputih.util.DataDummy;
+import com.example.pbokmnarkotikamerahputih.util.ValidationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class KnowledgeController {
 
     public KnowledgeController() {
         this.repository = new KnowledgeRepository();
-        com.example.pbofinal.util.DataDummy.muatData(repository);
+        DataDummy.muatData(repository);
     }
 
     // ── tambahPutusan(String[] data) ──────────────────────────
@@ -43,15 +44,20 @@ public class KnowledgeController {
 
             String nomorPerkara = data[0].trim();
             if (repository.isNomorDuplikat(nomorPerkara)) {
-                throw new IllegalArgumentException("Nomor perkara \"" + nomorPerkara + "\" sudah terdaftar.");
+                throw new IllegalArgumentException(
+                        "Nomor perkara \"" + nomorPerkara + "\" sudah terdaftar.");
             }
 
             Putusan p = new Putusan(
-                    nomorPerkara, data[1].trim(), data[2].trim(), data[3].trim(),
+                    nomorPerkara,
+                    data[1].trim(),
+                    data[2].trim(),
+                    data[3].trim(),
                     ValidationUtil.parseInt(data[4], 10, 100),
                     data[5].trim(),
                     ValidationUtil.parseDouble(data[6], 0.0),
-                    data[7].trim(), data[8].trim(),
+                    data[7].trim(),
+                    data[8].trim(),
                     ValidationUtil.parseInt(data[9], 1, 1200),
                     ValidationUtil.parseDouble(data[10], 0.0),
                     data[11].trim()
@@ -61,51 +67,68 @@ public class KnowledgeController {
             return true;
 
         } catch (IllegalArgumentException e) {
-            throw e; // dilempar ke View untuk ditampilkan sebagai pesan error
+            throw e;
         } catch (Exception e) {
-            throw new IllegalArgumentException("Terjadi kesalahan tidak terduga: " + e.getMessage());
+            throw new IllegalArgumentException(
+                    "Terjadi kesalahan tidak terduga: " + e.getMessage());
         }
     }
 
     // ── cariPutusan(keyword, mode) ─────────────────────────────
     public ArrayList<Putusan> cariPutusan(String keyword, String mode) {
         ArrayList<Putusan> hasil = new ArrayList<>();
-        if (keyword == null || keyword.trim().isEmpty()) return hasil;
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return hasil;
+        }
 
         switch (mode.toLowerCase()) {
             case "nomor" -> {
                 Putusan p = repository.cariByNomor(keyword);
-                if (p != null) hasil.add(p);
+                if (p != null) {
+                    hasil.add(p);
+                }
             }
             case "nama" -> hasil = repository.cariByNama(keyword);
         }
+
         return hasil;
     }
 
     // ── filterPutusan(kriteria, nilai) ─────────────────────────
     public ArrayList<Putusan> filterPutusan(String kriteria, String nilai) {
         ArrayList<Putusan> hasil = new ArrayList<>();
-        if (nilai == null || nilai.trim().isEmpty()) return hasil;
+
+        if (nilai == null || nilai.trim().isEmpty()) {
+            return hasil;
+        }
 
         switch (kriteria.toLowerCase()) {
-            case "jenis"      -> hasil = repository.filterByJenis(nilai);
-            case "pengadilan" -> hasil = repository.filterByPengadilan(nilai);
+            case "jenis" ->
+                    hasil = repository.filterByJenis(nilai);
+
+            case "pengadilan" ->
+                    hasil = repository.filterByPengadilan(nilai);
         }
+
         return hasil;
     }
 
-    // ── hapusPutusan(nomor) ─────────────────────────────────────
+    // ── hapusPutusan(nomor) ────────────────────────────────────
     public boolean hapusPutusan(String nomor) {
-        if (nomor == null || nomor.trim().isEmpty()) return false;
+        if (nomor == null || nomor.trim().isEmpty()) {
+            return false;
+        }
+
         return repository.hapus(nomor);
     }
 
-    // ── getStatistik() ───────────────────────────────────────
+    // ── Statistik ──────────────────────────────────────────────
     public StatistikPutusan getStatistik() {
         return new StatistikPutusan(repository.getDaftarSemua());
     }
 
-    // ── tampilkanSemua() — return data untuk View ─────────────
+    // ── Data untuk View ────────────────────────────────────────
     public ArrayList<Putusan> tampilkanSemua() {
         return repository.getDaftarSemua();
     }
@@ -126,13 +149,39 @@ public class KnowledgeController {
         return repository.filterByPengadilan(pengadilan);
     }
 
-    public int getTotalPutusan()             { return getStatistik().getTotalPutusan(); }
-    public double getRataRataVonis()         { return getStatistik().getRataRataVonis(); }
-    public double getRataRataDenda()         { return getStatistik().getRataRataDenda(); }
-    public String getNarkotikaTerbanyak()    { return getStatistik().getJenisNarkotikaTerbanyak(); }
-    public String[] getDistribusiPeran()     { return getStatistik().getDistribusiPeran(); }
-    public Map<String,Integer> getDistribusiNarkotika()  { return getStatistik().getDistribusiJenisNarkotika(); }
-    public Map<String,Integer> getDistribusiPengadilan() { return getStatistik().getDistribusiPengadilan(); }
-    public Putusan getVonisTertinggi()       { return getStatistik().getVonisTertinggi(); }
-    public Putusan getVonisTerendah()        { return getStatistik().getVonisTerendah(); }
+    public int getTotalPutusan() {
+        return getStatistik().getTotalPutusan();
+    }
+
+    public double getRataRataVonis() {
+        return getStatistik().getRataRataVonis();
+    }
+
+    public double getRataRataDenda() {
+        return getStatistik().getRataRataDenda();
+    }
+
+    public String getNarkotikaTerbanyak() {
+        return getStatistik().getJenisNarkotikaTerbanyak();
+    }
+
+    public String[] getDistribusiPeran() {
+        return getStatistik().getDistribusiPeran();
+    }
+
+    public Map<String, Integer> getDistribusiNarkotika() {
+        return getStatistik().getDistribusiJenisNarkotika();
+    }
+
+    public Map<String, Integer> getDistribusiPengadilan() {
+        return getStatistik().getDistribusiPengadilan();
+    }
+
+    public Putusan getVonisTertinggi() {
+        return getStatistik().getVonisTertinggi();
+    }
+
+    public Putusan getVonisTerendah() {
+        return getStatistik().getVonisTerendah();
+    }
 }
