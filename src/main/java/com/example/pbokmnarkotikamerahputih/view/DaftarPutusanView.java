@@ -1,3 +1,5 @@
+package com.example.pbofinal.view;
+
 import com.example.pbokmnarkotikamerahputih.controller.KnowledgeController;
 import com.example.pbokmnarkotikamerahputih.model.Putusan;
 import javafx.beans.property.SimpleStringProperty;
@@ -125,3 +127,98 @@ public class DaftarPutusanView {
         return panel;
     }
 
+    private void tampilkanDetail(Putusan p, VBox panel) {
+        panel.getChildren().clear();
+
+        Label judul = new Label("Detail Putusan");
+        judul.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #4FD1C5;");
+        panel.getChildren().add(judul);
+
+        String[][] fields = {
+                {"No. Perkara",     p.getNomorPerkara()},
+                {"Pengadilan",      p.getPengadilan()},
+                {"Tanggal Putusan", p.getTanggalPutusan()},
+                {"Nama Terdakwa",   p.getNamaTerdakwa()},
+                {"Umur Terdakwa",   p.getUmurTerdakwa() + " tahun"},
+                {"Jenis Narkotika", p.getJenisNarkotika()},
+                {"Berat BB",        String.format("%.2f gram", p.getBeratBarangBukti())},
+                {"Pasal Dilanggar", p.getPasalDilanggar()},
+                {"Peran Terdakwa",  p.getPeranTerdakwa()},
+                {"Vonis Hukuman",   p.getVonisHukuman() + " bulan (" + p.getKategoriHukuman() + ")"},
+                {"Vonis Denda",     String.format("Rp %,.2f", p.getVonisDenda())},
+                {"Nama Hakim",      p.getNamaHakim()},
+        };
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10); grid.setVgap(8);
+        for (int i = 0; i < fields.length; i++) {
+            Label lbl = new Label(fields[i][0]);
+            lbl.setStyle("-fx-text-fill: #5B7B95; -fx-font-size: 11px; -fx-min-width: 110;");
+            Label val = new Label(fields[i][1]);
+            val.setStyle("-fx-text-fill: #E0F0FF; -fx-font-size: 11px;");
+            val.setWrapText(true);
+            grid.add(lbl, 0, i); grid.add(val, 1, i);
+        }
+        panel.getChildren().add(grid);
+    }
+
+    private TableColumn<PutusanRow, String> kolom(String judul, String prop, double minW) {
+        TableColumn<PutusanRow, String> col = new TableColumn<>(judul);
+        col.setCellValueFactory(new PropertyValueFactory<>(prop));
+        col.setMinWidth(minW);
+        return col;
+    }
+
+    private Button buatButton(String teks, String bgColor, String textColor) {
+        Button btn = new Button(teks);
+        btn.setStyle("-fx-background-color: " + bgColor + "; -fx-text-fill: " + textColor + "; " +
+                "-fx-font-size: 12px; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 7 16;");
+        return btn;
+    }
+
+    private void showAlert(Alert.AlertType type, String msg) {
+        Alert a = new Alert(type, msg);
+        a.showAndWait();
+    }
+
+    public static class PutusanRow {
+        private final Putusan putusan;
+        private final SimpleStringProperty nomorPerkara, namaTerdakwa, pengadilan,
+                jenisNarkotika, peranTerdakwa, pasalDilanggar, tanggalPutusan;
+        private final SimpleStringProperty vonisHukuman, vonisDenda;
+
+        public PutusanRow(Putusan p) {
+            this.putusan        = p;
+            this.nomorPerkara   = new SimpleStringProperty(p.getNomorPerkara());
+            this.namaTerdakwa   = new SimpleStringProperty(p.getNamaTerdakwa());
+            this.pengadilan     = new SimpleStringProperty(p.getPengadilan());
+            this.jenisNarkotika = new SimpleStringProperty(p.getJenisNarkotika());
+            this.peranTerdakwa  = new SimpleStringProperty(p.getPeranTerdakwa());
+            this.pasalDilanggar = new SimpleStringProperty(p.getPasalDilanggar());
+            this.vonisHukuman   = new SimpleStringProperty(String.valueOf(p.getVonisHukuman()));
+            this.vonisDenda     = new SimpleStringProperty(String.format("%,.2f", p.getVonisDenda()));
+            this.tanggalPutusan = new SimpleStringProperty(p.getTanggalPutusan());
+        }
+
+        public Putusan getPutusan() { return putusan; }
+        public String getNomorPerkara()   { return nomorPerkara.get(); }
+        public String getNamaTerdakwa()   { return namaTerdakwa.get(); }
+        public String getPengadilan()     { return pengadilan.get(); }
+        public String getJenisNarkotika() { return jenisNarkotika.get(); }
+        public String getPeranTerdakwa()  { return peranTerdakwa.get(); }
+        public String getPasalDilanggar() { return pasalDilanggar.get(); }
+        public String getVonisHukuman()   { return vonisHukuman.get(); }
+        public String getVonisDenda()     { return vonisDenda.get(); }
+        public String getTanggalPutusan() { return tanggalPutusan.get(); }
+
+        public SimpleStringProperty nomorPerkaraProperty()   { return nomorPerkara; }
+        public SimpleStringProperty namaTerdakwaProperty()   { return namaTerdakwa; }
+        public SimpleStringProperty pengadilanProperty()     { return pengadilan; }
+        public SimpleStringProperty jenisNarkotikaProperty() { return jenisNarkotika; }
+        public SimpleStringProperty peranTerdakwaProperty()  { return peranTerdakwa; }
+        public SimpleStringProperty pasalDilanggarProperty() { return pasalDilanggar; }
+        public SimpleStringProperty vonisHukumanProperty()   { return vonisHukuman; }
+        public SimpleStringProperty vonisDendaProperty()     { return vonisDenda; }
+        public SimpleStringProperty tanggalPutusanProperty() { return tanggalPutusan; }
+    }
+}
