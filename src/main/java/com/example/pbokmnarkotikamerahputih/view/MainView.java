@@ -1,6 +1,6 @@
 package com.example.pbokmnarkotikamerahputih.view;
 
-import  com.example.pbokmnarkotikamerahputih.controller.KnowledgeController;
+import com.example.pbokmnarkotikamerahputih.controller.KnowledgeController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
