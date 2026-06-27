@@ -1,4 +1,4 @@
-package com.example.pbofinal.view;
+package com.example.pbokmnarkotikamerahputih.view;
 
 import com.example.pbokmnarkotikamerahputih.controller.KnowledgeController;
 import com.example.pbokmnarkotikamerahputih.model.Putusan;
