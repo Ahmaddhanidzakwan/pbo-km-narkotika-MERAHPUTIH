@@ -1,16 +1,5 @@
 package com.example.pbokmnarkotikamerahputih.util;
 
-/**
- * ============================================================
- *  CLASS: ValidationUtil   [UTIL]
- *  Validasi input untuk form JavaFX.
- * ============================================================
- *  KONSEP OOP:
- *  - Static Methods
- *  - Method Overloading
- *  - Exception Handling
- * ============================================================
- */
 public class ValidationUtil {
 
     private ValidationUtil() {

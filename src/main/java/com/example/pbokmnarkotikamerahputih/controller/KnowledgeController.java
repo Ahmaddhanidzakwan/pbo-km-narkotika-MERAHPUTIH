@@ -10,17 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * ============================================================
- *  CLASS: KnowledgeController   [CONTROLLER]
- *  Jembatan antara Model dan View JavaFX. Seluruh logika bisnis
- *  ada di sini (bukan di Main atau View).
- * ============================================================
- *  ATURAN MVC:
- *  - View tidak boleh mengakses Model secara langsung
- *  - Controller memvalidasi input lalu memerintahkan Model
- * ============================================================
- */
 public class KnowledgeController {
 
     private final KnowledgeRepository repository;
