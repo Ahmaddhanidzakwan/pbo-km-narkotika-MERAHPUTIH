@@ -72,6 +72,8 @@ public class KnowledgeController {
             return hasil;
         }
 
+        keyword = keyword.trim();
+
         switch (mode.toLowerCase()) {
             case "nomor" -> {
                 Putusan p = repository.cariByNomor(keyword);
@@ -92,6 +94,8 @@ public class KnowledgeController {
         if (nilai == null || nilai.trim().isEmpty()) {
             return hasil;
         }
+
+        nilai = nilai.trim();
 
         switch (kriteria.toLowerCase()) {
             case "jenis" ->
