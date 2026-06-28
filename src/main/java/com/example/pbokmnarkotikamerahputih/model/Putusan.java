@@ -69,3 +69,21 @@ public void setJumlahDenda(double jumlahDenda) { this.jumlahDenda = jumlahDenda;
 
 public String getNamaHakim() { return namaHakim; }
 public void setNamaHakim(String namaHakim) { this.namaHakim = namaHakim; }
+
+@Override
+public String toString() {
+    return "Putusan{" +
+            "nomorPerkara='" + nomorPerkara + '\'' +
+            ", pengadilan='" + pengadilan + '\'' +
+            ", tanggalPutusan='" + tanggalPutusan + '\'' +
+            ", namaTerdakwa='" + namaTerdakwa + '\'' +
+            ", umurTerdakwa=" + umurTerdakwa +
+            ", jenisNarkotika='" + jenisNarkotika + '\'' +
+            ", beratBarangBukti=" + beratBarangBukti +
+            ", pasalDilanggar='" + pasalDilanggar + '\'' +
+            ", peranTerdakwa='" + peranTerdakwa + '\'' +
+            ", lamaHukumanBulan=" + lamaHukumanBulan +
+            ", jumlahDenda=" + jumlahDenda +
+            ", namaHakim='" + namaHakim + '\'' +
+            '}';
+}
