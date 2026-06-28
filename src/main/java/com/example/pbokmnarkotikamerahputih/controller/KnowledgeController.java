@@ -32,6 +32,7 @@ public class KnowledgeController {
             );
 
             String nomorPerkara = data[0].trim();
+
             if (repository.isNomorDuplikat(nomorPerkara)) {
                 throw new IllegalArgumentException(
                         "Nomor perkara \"" + nomorPerkara + "\" sudah terdaftar.");
