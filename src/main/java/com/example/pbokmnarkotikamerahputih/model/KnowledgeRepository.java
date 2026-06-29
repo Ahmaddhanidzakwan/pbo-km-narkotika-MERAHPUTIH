@@ -9,4 +9,12 @@ public class KnowledgeRepository {
     public KnowledgeRepository() {
         daftarPutusan = new ArrayList<>();
     }
+
+    public void tambahPutusan(Putusan putusan) {
+        if (putusan != null) daftarPutusan.add(putusan);
+    }
+
+    public List<Putusan> getSemuaPutusan() {
+        return new ArrayList<>(daftarPutusan);
+    }
 }
