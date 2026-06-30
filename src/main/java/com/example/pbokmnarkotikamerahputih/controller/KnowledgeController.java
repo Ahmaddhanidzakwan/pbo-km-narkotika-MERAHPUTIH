@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller yang menghubungkan View dengan Model
+ * serta menangani logika bisnis aplikasi putusan narkotika.
+ */
 public class KnowledgeController {
 
     private final KnowledgeRepository repository;
@@ -19,7 +23,12 @@ public class KnowledgeController {
         DataDummy.muatData(repository);
     }
 
-    // ── tambahPutusan(String[] data) ──────────────────────────
+    /**
+     * Menambahkan data putusan baru ke repository.
+     *
+     * @param data data putusan dari form input.
+     * @return true jika data berhasil disimpan.
+     */
     public boolean tambahPutusan(String[] data) {
         try {
             if (data == null || data.length != 12) {
@@ -38,7 +47,7 @@ public class KnowledgeController {
                         "Nomor perkara \"" + nomorPerkara + "\" sudah terdaftar.");
             }
 
-            Putusan p = new Putusan(
+            Putusan putusan = new Putusan(
                     nomorPerkara,
                     data[1].trim(),
                     data[2].trim(),
@@ -53,7 +62,7 @@ public class KnowledgeController {
                     data[11].trim()
             );
 
-            repository.simpan(p);
+            repository.simpan(putusan);
             return true;
 
         } catch (IllegalArgumentException e) {
@@ -64,7 +73,13 @@ public class KnowledgeController {
         }
     }
 
-    // ── cariPutusan(keyword, mode) ─────────────────────────────
+    /**
+     * Mencari putusan berdasarkan nomor perkara atau nama terdakwa.
+     *
+     * @param keyword kata kunci pencarian.
+     * @param mode jenis pencarian.
+     * @return daftar putusan yang ditemukan.
+     */
     public ArrayList<Putusan> cariPutusan(String keyword, String mode) {
         ArrayList<Putusan> hasil = new ArrayList<>();
 
@@ -76,9 +91,9 @@ public class KnowledgeController {
 
         switch (mode.toLowerCase()) {
             case "nomor" -> {
-                Putusan p = repository.cariByNomor(keyword);
-                if (p != null) {
-                    hasil.add(p);
+                Putusan putusan = repository.cariByNomor(keyword);
+                if (putusan != null) {
+                    hasil.add(putusan);
                 }
             }
             case "nama" -> hasil = repository.cariByNama(keyword);
@@ -87,7 +102,13 @@ public class KnowledgeController {
         return hasil;
     }
 
-    // ── filterPutusan(kriteria, nilai) ─────────────────────────
+    /**
+     * Memfilter data putusan berdasarkan kriteria tertentu.
+     *
+     * @param kriteria jenis filter.
+     * @param nilai nilai filter.
+     * @return daftar putusan hasil filter.
+     */
     public ArrayList<Putusan> filterPutusan(String kriteria, String nilai) {
         ArrayList<Putusan> hasil = new ArrayList<>();
 
@@ -108,7 +129,12 @@ public class KnowledgeController {
         return hasil;
     }
 
-    // ── hapusPutusan(nomor) ────────────────────────────────────
+    /**
+     * Menghapus data putusan berdasarkan nomor perkara.
+     *
+     * @param nomor nomor perkara.
+     * @return true jika data berhasil dihapus.
+     */
     public boolean hapusPutusan(String nomor) {
         if (nomor == null || nomor.trim().isEmpty()) {
             return false;
@@ -117,12 +143,10 @@ public class KnowledgeController {
         return repository.hapus(nomor);
     }
 
-    // ── Statistik ──────────────────────────────────────────────
     public StatistikPutusan getStatistik() {
         return new StatistikPutusan(repository.getDaftarSemua());
     }
 
-    // ── Data untuk View ────────────────────────────────────────
     public ArrayList<Putusan> tampilkanSemua() {
         return repository.getDaftarSemua();
     }
