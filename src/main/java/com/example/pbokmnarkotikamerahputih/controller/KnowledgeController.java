@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Controller yang menghubungkan View dengan Model
- * serta menangani logika bisnis aplikasi putusan narkotika.
- */
+
 public class KnowledgeController {
 
     private final KnowledgeRepository repository;
@@ -23,12 +20,7 @@ public class KnowledgeController {
         DataDummy.muatData(repository);
     }
 
-    /**
-     * Menambahkan data putusan baru ke repository.
-     *
-     * @param data data putusan dari form input.
-     * @return true jika data berhasil disimpan.
-     */
+
     public boolean tambahPutusan(String[] data) {
         try {
             if (data == null || data.length != 12) {
@@ -102,13 +94,7 @@ public class KnowledgeController {
         return hasil;
     }
 
-    /**
-     * Memfilter data putusan berdasarkan kriteria tertentu.
-     *
-     * @param kriteria jenis filter.
-     * @param nilai nilai filter.
-     * @return daftar putusan hasil filter.
-     */
+
     public ArrayList<Putusan> filterPutusan(String kriteria, String nilai) {
         ArrayList<Putusan> hasil = new ArrayList<>();
 
@@ -129,12 +115,7 @@ public class KnowledgeController {
         return hasil;
     }
 
-    /**
-     * Menghapus data putusan berdasarkan nomor perkara.
-     *
-     * @param nomor nomor perkara.
-     * @return true jika data berhasil dihapus.
-     */
+
     public boolean hapusPutusan(String nomor) {
         if (nomor == null || nomor.trim().isEmpty()) {
             return false;
