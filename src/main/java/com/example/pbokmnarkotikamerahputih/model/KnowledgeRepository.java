@@ -55,7 +55,7 @@ public class KnowledgeRepository {
 
     public boolean hapus(String nomor) {
         return daftarPutusan.removeIf(
-                p -> p.getNomorPerkara().equalsIgnoreCase(nomor.trim())
+            p -> p.getNomorPerkara().equalsIgnoreCase(nomor.trim())
         );
     }
 

@@ -10,5 +10,5 @@ module com.example.pbokmnarkotikamerahputih {
     exports com.example.pbokmnarkotikamerahputih.util;
 
     opens com.example.pbokmnarkotikamerahputih.view to javafx.graphics, javafx.fxml;
-    opens ccom.example.pbokmnarkotikamerahputih.app to javafx.graphics;
+    opens com.example.pbokmnarkotikamerahputih to javafx.graphics;
 }
