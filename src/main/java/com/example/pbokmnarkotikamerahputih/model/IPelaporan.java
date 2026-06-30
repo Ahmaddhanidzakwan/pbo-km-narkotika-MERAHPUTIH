@@ -1,6 +1,6 @@
 package com.example.pbokmnarkotikamerahputih.model;
 
 public interface IPelaporan {
-    void hitungData();
+    void hitungSemua();
     void tampilkanLaporan();
 }
