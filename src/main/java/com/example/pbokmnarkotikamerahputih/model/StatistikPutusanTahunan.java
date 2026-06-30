@@ -1,28 +1,33 @@
 package com.example.pbokmnarkotikamerahputih.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StatistikPutusanTahunan extends StatistikPutusan {
-    private String tahun;
 
-    public StatistikPutusanTahunan(List<Putusan> semuaData, String tahun) {
-        super(filterData(semuaData, tahun));
-        this.tahun = tahun;
+    private final String tahunFilter;
+
+    public StatistikPutusanTahunan(ArrayList<Putusan> daftar, String tahunFilter) {
+        super(filterByTahun(daftar, tahunFilter));
+        this.tahunFilter = tahunFilter;
     }
 
-    private static List<Putusan> filterData(List<Putusan> semuaData, String tahun) {
-        List<Putusan> hasil = new ArrayList<>();
-        for (Putusan p : semuaData) {
-            if (p.getTanggalPutusan() != null && p.getTanggalPutusan().endsWith(tahun))
+    private static ArrayList<Putusan> filterByTahun(ArrayList<Putusan> daftar, String tahun) {
+        ArrayList<Putusan> hasil = new ArrayList<>();
+        for (Putusan p : daftar) {
+            if (p.getTanggalPutusan() != null && p.getTanggalPutusan().endsWith(tahun)) {
                 hasil.add(p);
+            }
         }
         return hasil;
     }
 
     @Override
     public void tampilkanLaporan() {
-        System.out.printf("=== LAPORAN TAHUN %s ===%n", tahun);
+        System.out.println("Laporan Statistik Tahun: " + tahunFilter);
         super.tampilkanLaporan();
+    }
+
+    public String getTahunFilter() {
+        return tahunFilter;
     }
 }
