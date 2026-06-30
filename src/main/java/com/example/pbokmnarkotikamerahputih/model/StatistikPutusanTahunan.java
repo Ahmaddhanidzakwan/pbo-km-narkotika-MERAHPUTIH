@@ -13,6 +13,16 @@ public class StatistikPutusanTahunan extends StatistikPutusan {
 
     private static List<Putusan> filterData(List<Putusan> semuaData, String tahun) {
         List<Putusan> hasil = new ArrayList<>();
+        for (Putusan p : semuaData) {
+            if (p.getTanggalPutusan() != null && p.getTanggalPutusan().endsWith(tahun))
+                hasil.add(p);
+        }
         return hasil;
+    }
+
+    @Override
+    public void tampilkanLaporan() {
+        System.out.printf("=== LAPORAN TAHUN %s ===%n", tahun);
+        super.tampilkanLaporan();
     }
 }
