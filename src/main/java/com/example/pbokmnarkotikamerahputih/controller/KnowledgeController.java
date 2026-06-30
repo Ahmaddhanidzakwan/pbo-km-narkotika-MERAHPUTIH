@@ -10,7 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * ============================================================
+ *  CLASS: KnowledgeController   [CONTROLLER]
+ *  Jembatan antara Model dan View JavaFX. Seluruh logika bisnis
+ *  ada di sini (bukan di Main atau View).
+ * ============================================================
+ *  ATURAN MVC:
+ *  - View tidak boleh mengakses Model secara langsung
+ *  - Controller memvalidasi input lalu memerintahkan Model
+ * ============================================================
+ */
 public class KnowledgeController {
 
     private final KnowledgeRepository repository;
@@ -20,7 +30,7 @@ public class KnowledgeController {
         DataDummy.muatData(repository);
     }
 
-
+    // ── tambahPutusan(String[] data) ──────────────────────────
     public boolean tambahPutusan(String[] data) {
         try {
             if (data == null || data.length != 12) {
@@ -33,101 +43,70 @@ public class KnowledgeController {
             );
 
             String nomorPerkara = data[0].trim();
-
             if (repository.isNomorDuplikat(nomorPerkara)) {
-                throw new IllegalArgumentException(
-                        "Nomor perkara \"" + nomorPerkara + "\" sudah terdaftar.");
+                throw new IllegalArgumentException("Nomor perkara \"" + nomorPerkara + "\" sudah terdaftar.");
             }
 
-            Putusan putusan = new Putusan(
-                    nomorPerkara,
-                    data[1].trim(),
-                    data[2].trim(),
-                    data[3].trim(),
+            Putusan p = new Putusan(
+                    nomorPerkara, data[1].trim(), data[2].trim(), data[3].trim(),
                     ValidationUtil.parseInt(data[4], 10, 100),
                     data[5].trim(),
                     ValidationUtil.parseDouble(data[6], 0.0),
-                    data[7].trim(),
-                    data[8].trim(),
+                    data[7].trim(), data[8].trim(),
                     ValidationUtil.parseInt(data[9], 1, 1200),
                     ValidationUtil.parseDouble(data[10], 0.0),
                     data[11].trim()
             );
 
-            repository.simpan(putusan);
+            repository.simpan(p);
             return true;
 
         } catch (IllegalArgumentException e) {
-            throw e;
+            throw e; // dilempar ke View untuk ditampilkan sebagai pesan error
         } catch (Exception e) {
-            throw new IllegalArgumentException(
-                    "Terjadi kesalahan tidak terduga: " + e.getMessage());
+            throw new IllegalArgumentException("Terjadi kesalahan tidak terduga: " + e.getMessage());
         }
     }
 
-    /**
-     * Mencari putusan berdasarkan nomor perkara atau nama terdakwa.
-     *
-     * @param keyword kata kunci pencarian.
-     * @param mode jenis pencarian.
-     * @return daftar putusan yang ditemukan.
-     */
+    // ── cariPutusan(keyword, mode) ─────────────────────────────
     public ArrayList<Putusan> cariPutusan(String keyword, String mode) {
         ArrayList<Putusan> hasil = new ArrayList<>();
-
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return hasil;
-        }
-
-        keyword = keyword.trim();
+        if (keyword == null || keyword.trim().isEmpty()) return hasil;
 
         switch (mode.toLowerCase()) {
             case "nomor" -> {
-                Putusan putusan = repository.cariByNomor(keyword);
-                if (putusan != null) {
-                    hasil.add(putusan);
-                }
+                Putusan p = repository.cariByNomor(keyword);
+                if (p != null) hasil.add(p);
             }
             case "nama" -> hasil = repository.cariByNama(keyword);
         }
-
         return hasil;
     }
 
-
+    // ── filterPutusan(kriteria, nilai) ─────────────────────────
     public ArrayList<Putusan> filterPutusan(String kriteria, String nilai) {
         ArrayList<Putusan> hasil = new ArrayList<>();
-
-        if (nilai == null || nilai.trim().isEmpty()) {
-            return hasil;
-        }
-
-        nilai = nilai.trim();
+        if (nilai == null || nilai.trim().isEmpty()) return hasil;
 
         switch (kriteria.toLowerCase()) {
-            case "jenis" ->
-                    hasil = repository.filterByJenis(nilai);
-
-            case "pengadilan" ->
-                    hasil = repository.filterByPengadilan(nilai);
+            case "jenis"      -> hasil = repository.filterByJenis(nilai);
+            case "pengadilan" -> hasil = repository.filterByPengadilan(nilai);
         }
-
         return hasil;
     }
 
-
+    // ── hapusPutusan(nomor) ─────────────────────────────────────
     public boolean hapusPutusan(String nomor) {
-        if (nomor == null || nomor.trim().isEmpty()) {
-            return false;
-        }
-
+        if (nomor == null || nomor.trim().isEmpty()) return false;
         return repository.hapus(nomor);
     }
 
+    // ── getStatistik() ───────────────────────────────────────
     public StatistikPutusan getStatistik() {
         return new StatistikPutusan(repository.getDaftarSemua());
     }
 
+    // ── tampilkanSemua() — return data untuk View ─────────────
     public ArrayList<Putusan> tampilkanSemua() {
         return repository.getDaftarSemua();
     }
@@ -148,39 +127,13 @@ public class KnowledgeController {
         return repository.filterByPengadilan(pengadilan);
     }
 
-    public int getTotalPutusan() {
-        return getStatistik().getTotalPutusan();
-    }
-
-    public double getRataRataVonis() {
-        return getStatistik().getRataRataVonis();
-    }
-
-    public double getRataRataDenda() {
-        return getStatistik().getRataRataDenda();
-    }
-
-    public String getNarkotikaTerbanyak() {
-        return getStatistik().getJenisNarkotikaTerbanyak();
-    }
-
-    public String[] getDistribusiPeran() {
-        return getStatistik().getDistribusiPeran();
-    }
-
-    public Map<String, Integer> getDistribusiNarkotika() {
-        return getStatistik().getDistribusiJenisNarkotika();
-    }
-
-    public Map<String, Integer> getDistribusiPengadilan() {
-        return getStatistik().getDistribusiPengadilan();
-    }
-
-    public Putusan getVonisTertinggi() {
-        return getStatistik().getVonisTertinggi();
-    }
-
-    public Putusan getVonisTerendah() {
-        return getStatistik().getVonisTerendah();
-    }
+    public int getTotalPutusan()             { return getStatistik().getTotalPutusan(); }
+    public double getRataRataVonis()         { return getStatistik().getRataRataVonis(); }
+    public double getRataRataDenda()         { return getStatistik().getRataRataDenda(); }
+    public String getNarkotikaTerbanyak()    { return getStatistik().getJenisNarkotikaTerbanyak(); }
+    public String[] getDistribusiPeran()     { return getStatistik().getDistribusiPeran(); }
+    public Map<String,Integer> getDistribusiNarkotika()  { return getStatistik().getDistribusiJenisNarkotika(); }
+    public Map<String,Integer> getDistribusiPengadilan() { return getStatistik().getDistribusiPengadilan(); }
+    public Putusan getVonisTertinggi()       { return getStatistik().getVonisTertinggi(); }
+    public Putusan getVonisTerendah()        { return getStatistik().getVonisTerendah(); }
 }
