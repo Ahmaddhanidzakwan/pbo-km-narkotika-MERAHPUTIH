@@ -1,14 +1,15 @@
-module com.example.pbokmnarkotikamerahputih {
+module pbo.km.narkotika.MERAHPUTIH {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
+
+
+    exports com.example.pbokmnarkotikamerahputih.view;
+    opens com.example.pbokmnarkotikamerahputih.view to javafx.graphics, javafx.fxml;
+
 
     exports com.example.pbokmnarkotikamerahputih.app;
-    exports com.example.pbokmnarkotikamerahputih.view;
-    exports com.example.pbokmnarkotikamerahputih.controller;
-    exports com.example.pbokmnarkotikamerahputih.model;
-    exports com.example.pbokmnarkotikamerahputih.util;
+    opens com.example.pbokmnarkotikamerahputih.app to javafx.fxml;
 
-    opens com.example.pbokmnarkotikamerahputih.view to javafx.graphics, javafx.fxml;
-    opens com.example.pbokmnarkotikamerahputih to javafx.graphics;
+    exports com.example.pbokmnarkotikamerahputih.controller;
+    opens com.example.pbokmnarkotikamerahputih.controller to javafx.fxml;
 }
