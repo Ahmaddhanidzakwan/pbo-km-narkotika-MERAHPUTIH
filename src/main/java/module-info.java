@@ -1,4 +1,4 @@
-module com.example.pbokmnarkotikamerahputih {
+module pbo.km.narkotika.MERAHPUTIH {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
