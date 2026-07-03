@@ -10,5 +10,5 @@ module pbo.km.narkotika.MERAHPUTIH {
     exports com.example.pbokmnarkotikamerahputih.util;
 
     opens com.example.pbokmnarkotikamerahputih.view to javafx.graphics, javafx.fxml;
-    opens com.example.pbokmnarkotikamerahputih to javafx.graphics;
+    opens ccom.example.pbokmnarkotikamerahputih.app to javafx.graphics;
 }
